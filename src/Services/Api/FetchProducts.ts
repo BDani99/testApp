@@ -1,6 +1,6 @@
 import axios from 'axios';
-import API_URL from './ApiConfig.tsx';
-import { Product } from '../Interface/Product.tsx';
+import API_URL from './ApiConfig.ts';
+import { Product } from '../Interface/Product.ts';
 
 export const fetchProducts = async (skip: number = 0): Promise<Product[]> => {
     try {

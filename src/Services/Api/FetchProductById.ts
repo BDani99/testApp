@@ -1,5 +1,5 @@
 import axios from 'axios';
-import API_URL from './ApiConfig.tsx';
+import API_URL from './ApiConfig.ts';
 
 export const fetchProductById = async (productId: number) => {
     const response = await axios.get(`${API_URL}/${productId}`);
