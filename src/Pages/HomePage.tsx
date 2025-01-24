@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { fetchProducts } from '../Services/Api/FetchProducts.ts';
-import { Product } from '../Services/Interface/Product.ts';
+import { fetchProducts } from '../Services/Api/FetchProducts.tsx';
+import { Product } from '../Services/Interface/Product.tsx';
 import CustomButton from '../Components/CustomButton.tsx';
-import { truncateTitle, truncateDescription } from '../Utils/TextUtils.ts';
-import InfiniteScroll from '../Utils/InfiniteScroll.ts';
+import { truncateTitle, truncateDescription } from '../Utils/TextUtils.tsx';
+import InfiniteScroll from '../Utils/InfiniteScroll.tsx';
 
 const HomePage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
                     {products.map((product, index) => (
                         <li
                             key={`${product.id}-${index}`}
-                            className="relative rounded-lg bg-white shadow-sm p-4 overflow-hidden"
+                            className="relative rounded-lg bg-white shadow-sm p-3 overflow-hidden"
                         >
                             <div className="relative">
                                 <img
