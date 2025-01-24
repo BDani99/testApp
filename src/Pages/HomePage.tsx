@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
         <div className="flex justify-center items-center">
             <div className="w-4/5">
                 <h1 className="text-4xl font-bold my-6 text-center text-gray-800">See Products</h1>
-                <ul className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6">
+                <ul className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6 mt-12">
                     {products.map((product, index) => (
                         <li
                             key={`${product.id}-${index}`}
@@ -66,9 +66,9 @@ const HomePage: React.FC = () => {
                                 <img
                                     src={product.thumbnail}
                                     alt={product.title}
-                                    className="w-full max-h-[250px] object-cover rounded-lg"
+                                    className="w-full max-h-[225px] object-cover rounded-lg"
                                 />
-                                <span className="absolute top-2 right-2 bg-purple-700 text-white text-sm font-semibold rounded-full px-2 py-1">
+                                <span className="absolute top-2 right-2 bg-purple-700 text-white text-sm font-semibold rounded-full px-3 py-1">
                                     -{product.discountPercentage}%
                                 </span>
                             </div>

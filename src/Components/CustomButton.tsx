@@ -9,7 +9,7 @@ interface CustomButtonProps {
 const CustomButton: React.FC<CustomButtonProps> = ({ label, onClick, width }) => {
     return (
         <button
-            className="mt-2 bg-black text-white font-semibold py-2 rounded-full hover:bg-gray-800 transition cursor-pointer"
+            className="mt-2 bg-black text-white font-bold py-2.5 rounded-full hover:bg-gray-800 transition cursor-pointer"
             onClick={onClick}
             style={{ width }}
         >

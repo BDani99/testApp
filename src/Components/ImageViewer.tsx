@@ -6,9 +6,10 @@ interface ImageViewerProps {
     currentImageIndex: number;
     onNext: () => void;
     onPrev: () => void;
+    onClickImage: () => void;
 }
 
-const ImageViewer: React.FC<ImageViewerProps> = ({ images, currentImageIndex, onNext, onPrev }) => {
+const ImageViewer: React.FC<ImageViewerProps> = ({ images, currentImageIndex, onNext, onPrev, onClickImage }) => {
     return (
         <div className="relative">
             <div className="flex items-center justify-center mb-2">
@@ -18,7 +19,8 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ images, currentImageIndex, on
                 <img
                     src={images[currentImageIndex]}
                     alt={`Product Image ${currentImageIndex + 1}`}
-                    className='w-full max-w-[400px] h-[400px] object-contain rounded-lg shadow-md'
+                    className='w-full max-w-[400px] h-[400px] object-contain rounded-lg shadow-md cursor-pointer'
+                    onClick={onClickImage}
                 />
                 <button className='cursor-pointer' onClick={onNext}>
                     <FaChevronRight className="text-2xl ml-2" />
