@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import { fetchProductById } from '../Services/Api/FetchProductById.tsx';
 import { Product } from '../Services/Interface/Product.tsx';
 import CustomButton from '../Components/CustomButton.tsx';
 import StarRating from '../Components/StarRating.tsx';
 import ImageViewer from '../Components/ImageViewer.tsx';
+import PulseLoading from '../Components/PulseLoading.tsx';
+import NotFound from '../Components/NotFound.tsx';
 import { FaDollarSign } from 'react-icons/fa';
 
 const DetailsPage: React.FC = () => {
@@ -19,8 +22,16 @@ const DetailsPage: React.FC = () => {
             try {
                 const data = await fetchProductById(parseInt(id!));
                 setProduct(data);
-            } catch (err) {
-                setError('Failed to fetch product details. ' + err);
+            } catch (err: unknown) {
+                if (err instanceof AxiosError) {
+                    if (err.response?.status === 404) {
+                        setError('Product not found');
+                    } else {
+                        setError('Fetching product failed: ' + err.message);
+                    }
+                } else if (err instanceof Error) {
+                    setError('An unknown error occurred');
+                }
             } finally {
                 setLoading(false);
             }
@@ -45,15 +56,19 @@ const DetailsPage: React.FC = () => {
         console.log('Added to cart');
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
+    if (loading) return <PulseLoading />;
+    if (error) {
+        if (error === 'Product not found') {
+            return <NotFound />;
+        }
+        return <p className='text-red-600 text-center'>{error}</p>;
+    }
 
     return (
         <div className="flex justify-center items-center p-4 min-h-screen bg-gray-100">
-            <div className="max-w-5xl w-full">
+            <div className="max-w-6xl w-full">
                 {product && (
                     <div className="flex flex-col md:flex-row justify-between gap-8 p-6">
-
                         <div className="flex-shrink-0 w-full md:w-1/2">
                             <ImageViewer
                                 images={product.images}
@@ -66,10 +81,10 @@ const DetailsPage: React.FC = () => {
                         <div className="flex-grow">
                             <div className="flex flex-col">
                                 <div className="flex justify-between items-center">
-                                    <h1 className="text-2xl font-bold text-gray-800">{product.title}</h1>
+                                    <h1 className="text-2xl w-6/10 font-bold text-gray-800">{product.title}</h1>
                                     <div className="flex items-center">
                                         <StarRating rating={product.rating} />
-                                        <strong className="ml-2 text-lg">{product.rating.toFixed(1)}</strong>
+                                        <strong className="ml-2 text-lg">{product.rating}</strong>
                                     </div>
                                 </div>
                                 <div className="mt-2">
@@ -82,7 +97,7 @@ const DetailsPage: React.FC = () => {
                                     -{product.discountPercentage}%
                                 </div>
                                 <div className='flex justify-between items-center mt-4'>
-                                    <p className="flex items-center text-3xl font-bold text-gray-800">{product.price} <FaDollarSign/></p>
+                                    <p className="flex items-center text-3xl font-bold text-gray-800">{product.price} <FaDollarSign /></p>
                                     <CustomButton label="Add to cart" width='45%' onClick={handleAddToCart} />
                                 </div>
                             </div>

@@ -18,7 +18,7 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ images, currentImageIndex, on
                 <img
                     src={images[currentImageIndex]}
                     alt={`Product Image ${currentImageIndex + 1}`}
-                    className='w-full h-auto max-w-[400px] max-h-[450px] object-contain rounded-lg shadow-md'
+                    className='w-full max-w-[400px] h-[400px] object-contain rounded-lg shadow-md'
                 />
                 <button className='cursor-pointer' onClick={onNext}>
                     <FaChevronRight className="text-2xl ml-2" />

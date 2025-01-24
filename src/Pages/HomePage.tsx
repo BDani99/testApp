@@ -4,17 +4,21 @@ import { Product } from '../Services/Interface/Product.tsx';
 import CustomButton from '../Components/CustomButton.tsx';
 import { truncateTitle, truncateDescription } from '../Utils/TextUtils.tsx';
 import InfiniteScroll from '../Utils/InfiniteScroll.tsx';
+import PulseLoading from '../Components/PulseLoading.tsx';
 import { FaDollarSign } from 'react-icons/fa';
 
 const HomePage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [skip, setSkip] = useState<number>(0);
     const [hasMore, setHasMore] = useState<boolean>(true);
 
     const loadProducts = useCallback(async () => {
         if (!hasMore) return;
+
+        setLoadingMore(true);
 
         try {
             const data = await fetchProducts(skip);
@@ -23,10 +27,11 @@ const HomePage: React.FC = () => {
             } else {
                 setProducts(prevProducts => [...prevProducts, ...data]);
             }
-        } catch (err) {
-            setError('Failed to fetch products. ' + err);
+        } catch (err: unknown) {
+            setError('Failed to fetch products. Error: ' + (err as Error).message);
         } finally {
             setLoading(false);
+            setLoadingMore(false);
         }
     }, [skip, hasMore]);
 
@@ -36,7 +41,7 @@ const HomePage: React.FC = () => {
 
     const handleLoadMore = () => {
         setSkip(prevSkip => prevSkip + 10);
-        setLoading(true);
+        setLoadingMore(true);
     };
 
     const handleClick = (productId: number) => (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,8 +49,8 @@ const HomePage: React.FC = () => {
         window.location.href = `/details/${productId}`;
     };
 
-    if (loading && products.length === 0) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
+    if (loading) return <PulseLoading />;
+    if (error) return <p className='text-red-600 text-center'>{error}</p>;
 
     return (
         <div className="flex justify-center items-center">
@@ -70,7 +75,7 @@ const HomePage: React.FC = () => {
                             <div className="flex flex-col">
                                 <div className="flex justify-between items-center">
                                     <h2 className="font-bold text-lg text-gray-600">{truncateTitle(product.title)}</h2>
-                                    <span className="flex items-center text-lg font-bold text-gray-500">{product.price} <FaDollarSign/></span>
+                                    <span className="flex items-center text-lg font-bold text-gray-500">{product.price} <FaDollarSign /></span>
                                 </div>
                                 <p className="text-gray-700 w-9/10" style={{ minHeight: '3rem' }}>
                                     {truncateDescription(product.description)}
@@ -81,10 +86,9 @@ const HomePage: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-                {loading && <p>Loading more products...</p>}
                 {!hasMore && <p className="text-center text-gray-500">No more products to load.</p>}
             </div>
-            <InfiniteScroll loading={loading} hasMore={hasMore} loadMore={handleLoadMore} />
+            <InfiniteScroll loading={loadingMore} hasMore={hasMore} loadMore={handleLoadMore} />
         </div>
     );
 };
