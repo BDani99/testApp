@@ -5,6 +5,7 @@ import { Product } from '../Services/Interface/Product.tsx';
 import CustomButton from '../Components/CustomButton.tsx';
 import StarRating from '../Components/StarRating.tsx';
 import ImageViewer from '../Components/ImageViewer.tsx';
+import { FaDollarSign } from 'react-icons/fa';
 
 const DetailsPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -81,7 +82,7 @@ const DetailsPage: React.FC = () => {
                                     -{product.discountPercentage}%
                                 </div>
                                 <div className='flex justify-between items-center mt-4'>
-                                    <p className="text-3xl font-bold text-gray-800">{product.price} $</p>
+                                    <p className="flex items-center text-3xl font-bold text-gray-800">{product.price} <FaDollarSign/></p>
                                     <CustomButton label="Add to cart" width='45%' onClick={handleAddToCart} />
                                 </div>
                             </div>

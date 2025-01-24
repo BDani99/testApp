@@ -4,6 +4,7 @@ import { Product } from '../Services/Interface/Product.tsx';
 import CustomButton from '../Components/CustomButton.tsx';
 import { truncateTitle, truncateDescription } from '../Utils/TextUtils.tsx';
 import InfiniteScroll from '../Utils/InfiniteScroll.tsx';
+import { FaDollarSign } from 'react-icons/fa';
 
 const HomePage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -60,7 +61,7 @@ const HomePage: React.FC = () => {
                                 <img
                                     src={product.thumbnail}
                                     alt={product.title}
-                                    className="w-full h-48 object-cover rounded-lg"
+                                    className="w-full max-h-[250px] object-cover rounded-lg"
                                 />
                                 <span className="absolute top-2 right-2 bg-purple-700 text-white text-sm font-semibold rounded-full px-2 py-1">
                                     -{product.discountPercentage}%
@@ -69,7 +70,7 @@ const HomePage: React.FC = () => {
                             <div className="flex flex-col">
                                 <div className="flex justify-between items-center">
                                     <h2 className="font-bold text-lg text-gray-600">{truncateTitle(product.title)}</h2>
-                                    <span className="text-lg font-bold text-gray-500">{product.price} $</span>
+                                    <span className="flex items-center text-lg font-bold text-gray-500">{product.price} <FaDollarSign/></span>
                                 </div>
                                 <p className="text-gray-700 w-9/10" style={{ minHeight: '3rem' }}>
                                     {truncateDescription(product.description)}
