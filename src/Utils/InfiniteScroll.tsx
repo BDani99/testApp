@@ -1,28 +1,34 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef, RefObject } from 'react';
 
-interface InfiniteScrollProps {
-    loading: boolean;
-    hasMore: boolean;
-    loadMore: () => void;
-}
+const InfiniteScroll = (
+  onLoadMore: () => void,
+  hasMore: boolean
+): RefObject<HTMLDivElement> => {
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
-const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ loading, hasMore, loadMore }) => {
-    useEffect(() => {
-        const handleScroll = () => {
-            if (loading || !hasMore) return;
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          onLoadMore();
+        }
+      },
+      { rootMargin: '100px' }
+    );
 
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-                loadMore();
-            }
-        };
+    if (sentinelRef.current) {
+      observer.observe(sentinelRef.current);
+    }
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [loading, hasMore, loadMore]);
+    return () => {
+      if (sentinelRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        observer.unobserve(sentinelRef.current);
+      }
+    };
+  }, [onLoadMore, hasMore]);
 
-    return null;
+  return sentinelRef;
 };
 
 export default InfiniteScroll;

@@ -1,5 +1,5 @@
 export const MAX_TITLE_LENGTH = 20;
-export const MAX_DESCRIPTION_LENGTH = 70;
+export const MAX_DESCRIPTION_LENGTH = 60;
 
 export const truncateTitle = (title: string) => {
     return title.length > MAX_TITLE_LENGTH
