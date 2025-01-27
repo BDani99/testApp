@@ -19,7 +19,6 @@ const HomePage: React.FC = () => {
         setLoading(true);
         try {
             const response = await fetchProducts(skip);
-            console.log(response);
             setProducts(prev => [...prev, ...response.products]);
             setSkip(prev => prev + 10);
             setHasMore(products.length + response.products.length < response.total);
@@ -38,7 +37,7 @@ const HomePage: React.FC = () => {
     };
 
     return (
-        <div className="max-w-screen-xl w-full mx-auto px-2 py-8">
+        <div className="max-w-screen-2xl w-full mx-auto px-4 py-8">
             <h1 className="text-4xl font-bold my-6 text-center text-gray-800">See Products</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-15">
                 {products.map((product) => (
@@ -50,7 +49,7 @@ const HomePage: React.FC = () => {
                             <img
                                 src={product.thumbnail}
                                 alt={product.title}
-                                className="w-full h-38 object-cover rounded-md mb-4"
+                                className="w-full h-40 object-cover rounded-md mb-4"
                             />
                             <span className="absolute top-2 right-2 bg-purple-700 text-white text-sm font-semibold rounded-full px-3 py-1">
                                 -{product.discountPercentage}%
