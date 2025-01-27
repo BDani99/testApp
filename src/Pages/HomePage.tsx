@@ -1,17 +1,17 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { fetchProducts } from '../Services/Api/FetchProducts';
 import { Product } from '../Services/Interface/Product';
-import { truncateTitle, truncateDescription } from '../Utils/TextUtils.tsx';
-import InfiniteScroll from '../Utils/InfiniteScroll.tsx';
-import CustomButton from '../Components/CustomButton.tsx';
-import PulseLoading from '../Components/PulseLoading.tsx';
+import { truncateTitle, truncateDescription } from '../Utils/TextUtils';
+import InfiniteScroll from '../Utils/InfiniteScroll';
+import CustomButton from '../Components/CustomButton';
+import PulseLoading from '../Components/PulseLoading';
 import { FaDollarSign } from 'react-icons/fa';
 
 const HomePage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [skip, setSkip] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+    const [skip, setSkip] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [hasMore, setHasMore] = useState<boolean>(true);
 
     const loadProducts = useCallback(async () => {
         if (!hasMore || loading) return;
